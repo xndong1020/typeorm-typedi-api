@@ -34,8 +34,15 @@ export class UserService {
     return this.repository.save(newUser)
   }
 
-  update(id: string, user: User) {
-    return this.repository.update(id, user)
+  async update(id: string, user: User) {
+    // return this.repository.update(id, user)
+    const userInDb = await this.repository.findOne(id)
+
+    Object.keys(user).forEach(key => {
+      userInDb[key] = user[key]
+    })
+
+    this.repository.save(userInDb)
   }
 
   del(id: string) {
