@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import { createConnection, useContainer } from 'typeorm'
 import { Container } from 'typedi'
 import * as express from 'express'
-import { Request, Response } from 'express'
 import { AppRoutes } from './routes'
 
 // Configure in your app TypeORM to use TypeDI Container, before you create a connection
@@ -18,7 +17,11 @@ createConnection()
     AppRoutes.forEach(route => {
       app[route.method](
         route.path,
-        (request: Request, response: Response, next: Function) => {
+        (
+          request: express.Request,
+          response: express.Response,
+          next: Function
+        ) => {
           route
             .action(request, response)
             .then(() => next)

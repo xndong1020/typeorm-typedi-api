@@ -16,17 +16,21 @@ export class UserService {
   // ) {}
 
   list(): Promise<User[]> {
-    return this.repository.find({ relations: ["pets"] })
-    // return this.repository.createQueryBuilder('User').getMany()
+    // return this.repository.find({ relations: ['pets'] })
+    return this.repository
+      .createQueryBuilder('User')
+      .leftJoinAndSelect('User.pets', 'pets')
+      .getMany()
   }
 
   byId(id: string): Promise<User> {
-    return this.repository.findOne(id)
-    // return this.repository
-    //   .createQueryBuilder('User')
-    //   .where('id=:id')
-    //   .setParameters({ id: id })
-    //   .getOne()
+    // return this.repository.findOne(id, { relations: ['pets'] })
+    return this.repository
+      .createQueryBuilder('User')
+      .leftJoinAndSelect('User.pets', 'pets')
+      .where('User.id=:id')
+      .setParameters({ id })
+      .getOne()
   }
 
   create(user: User): Promise<User> {
