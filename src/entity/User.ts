@@ -4,9 +4,11 @@ import {
   Column,
   BeforeUpdate,
   BeforeInsert,
-  AfterLoad
+  AfterLoad,
+  OneToMany
 } from 'typeorm'
 import * as bcrypt from 'bcrypt'
+import { Pet } from './Pet';
 
 @Entity()
 export class User {
@@ -16,11 +18,16 @@ export class User {
   @Column()
   name: string
 
-  @Column()
+  @Column({
+    unique: true
+  })
   email: string
 
   @Column()
   password: string
+
+  @OneToMany(type => Pet, pet => pet.owner)
+  pets: Pet[]
 
   private tempPassword: string
 

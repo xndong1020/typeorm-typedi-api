@@ -16,7 +16,7 @@ export class UserService {
   // ) {}
 
   list(): Promise<User[]> {
-    return this.repository.find()
+    return this.repository.find({ relations: ["pets"] })
     // return this.repository.createQueryBuilder('User').getMany()
   }
 
