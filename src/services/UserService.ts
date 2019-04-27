@@ -1,12 +1,19 @@
 import { Repository, getManager } from 'typeorm'
 import { User } from '../entity/User'
+import { Service } from 'typedi'
+import { InjectRepository } from 'typeorm-typedi-extensions'
 
+@Service()
 export class UserService {
+  // property injection
+  @InjectRepository(User)
   private repository: Repository<User>
 
-  constructor() {
-    this.repository = getManager().getRepository(User)
-  }
+  // Constructor injection
+  // constructor(
+  //   @InjectRepository(User)
+  //   private repository: Repository<User>
+  // ) {}
 
   list(): Promise<User[]> {
     return this.repository.find()
